@@ -7,7 +7,7 @@
 To get a local copy of this repository, open your terminal and run the following command:
 
 ```bash
-git clone https://github.com/Shravanch19/NOT404.git
+git clone https://github.com/Shravanch19/ModelForge.git
 ```
 
 ### Step 2: Create Virtual Enviroment
