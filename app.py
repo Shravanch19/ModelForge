@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return render_template('landing.html')
+    return render_template('main.html')
 
 @app.route('/get_message', methods=['GET'])
 def get_message():
