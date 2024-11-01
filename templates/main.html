@@ -4,25 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="/assets/style.css">
+    <title>ModelForge</title>
 </head>
 
 <body>
-    <div id="Side_panel">
-        <div id="logo">
-            <h1>ModelForge</h1>
+    <div class="background">
+        <div class="sidenav">
+            <div class="logo">ModelForge</div>
+            <div class="inputs">
+                <div class="input-file">
+                    <input type="file" id="fileInput" class="file" aria-label="File Input" accept=".csv" />
+                    <label for="fileInput" class="custom-file-label" id="fileInput-label">Choose a file</label>
+                </div>
+
+                <div class="input-description">
+                    <label for="Model-type">Model Type:</label>
+                    <div class="custom-select-container">
+                        <select name="Model-type" id="Model-type" aria-label="Select Model Type">
+                            <option value="" selected disabled>Select an option</option>
+                            <option value="regression">Regression</option>
+                            <option value="classification">Classification</option>
+                        </select>
+                        <span class="custom-arrow">&#x25BC;</span>
+                    </div>
+                </div>
+
+                <div class="target-feature">
+                    <label for="target-menu">Target Feature:</label>
+                    <div class="custom-select-container">
+                        <select name="target-menu" id="target-menu" aria-label="Select Target Feature">
+                            <option value="" selected disabled>Select an option</option>
+                            <option value="1">Age</option>
+                            <option value="2">Height</option>
+                        </select>
+                        <span class="custom-arrow">&#x25BC;</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit" id="submit-main">Submit</button>
+            </div>
+            <div class="footer">
+                Developer: Shravan & Jeevan
+            </div>
         </div>
-        <div id="menu">
-            <button onclick="fetchMessage()">Generate Code</button>
+
+        <div class="code">
+            <div class="top-clip">
+                <img src="/assets/AIs.gif" alt="AI illustration" />
+            </div>
+            <div class="content">
+                <p id="PRT">Upload a file to start generating your model</p>
+            </div>
         </div>
     </div>
-    <div id="Main">
-        <h1>Code Generator</h1>
-        <p>Generate code for your project</p>
-        <p id="PRT"></p>
-    </div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <script src="/assets/script.js"></script>
 </body>
 
 </html>
