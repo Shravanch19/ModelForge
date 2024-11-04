@@ -1,121 +1,135 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder, StandardScaler, MinMaxScaler
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
 from imblearn.over_sampling import SMOTE
 
 def Code_Generator(file, target_column):
-    code = base_code()
+    global code
+    code = []
+    code.append(base_code())
+    print("base code generated")
     data = pd.read_csv(file)
+    print("data imported")
 
-    data = preprocessing(data)
+    print("starting preprocessing")
+    data = preprocessing(data, target_column)
+
+    print("spliting the data")
     x_train, x_test, y_train, y_test = data_splitting_function(data, target_column)
+
+    print("creating the model")
     model = model_training_function(x_train, y_train)
-    accuracy_checker_function(model, x_test, y_test)
+
+    print("checking the accuracy")
+    acc = accuracy_checker_function(model, x_test, y_test)
     
-    return data, code
+    return data, "\n".join(code), acc
 
 def base_code():
     return """
-    import pandas as pd
-    import numpy as np
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
 
-    data = pd.read_csv(path_to_file)
+data = pd.read_csv('path_to_file')
+"""
 
-    """
+def preprocessing(data, target):
 
-def preprocessing(data):
-    data = null_function(data)
-    data = duplicates_function(data)
-    data = handling_categorical_data_function(data)
-    data = imbalance_data_function(data)
-    data = normalization_of_data_function(data)
-    data = feature_removal_function(data)
+    print("checking for missing values")
+    null_function(data)
+
+    print("checking for duplicates")
+    duplicates_function(data)
+
+    print("handling categorical data")
+    handling_categorical_data_function(data)
+
+    print("handeling imbalance data")
+    data = imbalance_data_function(data, target)
+
+    print("normalization of data")
+    normalization_of_data_function(data)
     return data
 
 def null_function(data):
-    # Check if there are missing values
+    code.append("data.isnull().sum()")
+
     if data.isnull().values.any():
-        # Get percentage of missing values for each column
         missing_percentage = data.isnull().mean() * 100
-        
         for column in data.columns:
             if missing_percentage[column] > 0:
-                if 5 <= missing_percentage[column] <= 10:
-                    # Drop rows with missing values if missing data is between 5-10%
+                if missing_percentage[column] <= 7:
+                    code.append(f"data.dropna(subset=['{column}'], inplace=True)")
                     data.dropna(subset=[column], inplace=True)
                 else:
                     if data[column].dtype == 'object':
-                        # Impute categorical data with mode
+                        code.append(f"data['{column}'].fillna(data['{column}'].mode()[0], inplace=True)")
                         data[column].fillna(data[column].mode()[0], inplace=True)
                     else:
-                        # Impute numerical data based on distribution skewness
                         skewness = data[column].skew()
-                        if abs(skewness) < 0.5:
+                        if abs(skewness) < 0.6:
+                            code.append(f"data['{column}'].fillna(data['{column}'].mean(), inplace=True)")
                             data[column].fillna(data[column].mean(), inplace=True)
                         else:
+                            code.append(f"data['{column}'].fillna(data['{column}'].median(), inplace=True)")
                             data[column].fillna(data[column].median(), inplace=True)
-    return data
 
 def duplicates_function(data):
     if data.duplicated().any():
+        code.append("data = data.drop_duplicates()")
         data = data.drop_duplicates()
-    return data
+
 
 def handling_categorical_data_function(data):
+
     le = LabelEncoder()
     for col in data.columns:
         if data[col].dtypes == 'object':
             data[col] = le.fit_transform(data[col])
-    return data
+    code.append(f"from sklearn.preprocessing import LabelEncoder\nle = LabelEncoder()\nfor col in data.columns:\n    if data[col].dtypes == 'object':\n        data[col] = le.fit_transform(data[col])")
 
-def imbalance_data_function(data):
-    # Handling imbalanced data if the target variable is specified
-    target_column = 'target'  # Replace with the actual target column
-    if target_column in data.columns:
+def imbalance_data_function(data, target):
+    if target in data.columns:
         smote = SMOTE()
-        X = data.drop(target_column, axis=1)
-        y = data[target_column]
+        X = data.drop(target, axis=1)
+        y = data[target]
         X_resampled, y_resampled = smote.fit_resample(X, y)
         data = pd.concat([X_resampled, y_resampled], axis=1)
+        code.append(f"from imblearn.over_sampling import SMOTE\nsmote = SMOTE()\nX_resampled, y_resampled = smote.fit_resample(X, y)")
     return data
 
-def normalization_of_data_function(data, method="standard"):
-    # Normalizing data
-    scaler = StandardScaler() if method == "standard" else MinMaxScaler()
-    numeric_columns = data.select_dtypes(include=[np.number]).columns.tolist()
-    data[numeric_columns] = scaler.fit_transform(data[numeric_columns])
-    return data
-
-def feature_removal_function(data):
-    # Remove features with low variance
-    low_variance_cols = [col for col in data.columns if data[col].nunique() < 2]
-    data = data.drop(columns=low_variance_cols)
-    return data
+def normalization_of_data_function(data, threshold=10):
+    feature_ranges = np.ptp(data, axis=0)
+    if np.max(feature_ranges) / np.min(feature_ranges) > threshold:
+        scaler = StandardScaler()
+        data = scaler.fit_transform(data)
+        code.append("from sklearn.preprocessing import StandardScaler\nscaler = StandardScaler()\ndata = scaler.fit_transform(data)")
 
 def data_splitting_function(data, target):
     X = data.drop(target, axis=1)
     y = data[target]
     x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+    code.append("x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)")
     return x_train, x_test, y_train, y_test
 
 def model_training_function(x_train, y_train):
-    model = RandomForestClassifier(random_state=0)
+    model = LinearRegression()
     model.fit(x_train, y_train)
+    code.append("from sklearn.linear_model import LinearRegression\nmodel = LinearRegression()\nmodel.fit(x_train, y_train)")
     return model
 
 def accuracy_checker_function(model, x_test, y_test):
     y_pred = model.predict(x_test)
-    accuracy = accuracy_score(y_test, y_pred)
-    print(f"Accuracy: {accuracy:.2f}")
-    print("Classification Report:\n", classification_report(y_test, y_pred))
+    accuracy = r2_score(y_test, y_pred)
+    code.append("from sklearn.metrics import r2_score\ny_pred = model.predict(x_test)\naccuracy = r2_score(y_test, y_pred)")
+    return accuracy
 
-# Additional function: feature selection using correlation
-def feature_selection_function(data, threshold=0.8):
-    corr_matrix = data.corr().abs()
-    upper_triangle = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(bool))
-    to_drop = [column for column in upper_triangle.columns if any(upper_triangle[column] > threshold)]
-    data = data.drop(columns=to_drop)
-    return data
+data, Code, acc = Code_Generator('Salary_Data.csv', "Salary")
+print("accuracy : ", end="")
+print(acc)
+print()
+print(Code)
