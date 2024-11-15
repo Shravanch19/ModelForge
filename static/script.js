@@ -1,17 +1,23 @@
-// async function fetchMessage() {
-//     const response = await fetch('/get_message');
-//     const data = await response.json();
-//     document.getElementById('PRT').innerText = data.message;
-// }
+async function fetchcolumn(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch('/get_columns', {
+        method: 'POST',              
+        body: formData                
+    });
+    const data = await response.json();
+    Columns_set(data.columns);
+}
+
+
 
 let isFormReady = false;
 
-const fileInput = document.getElementById('fileInput');
-const selectElement1 = document.getElementById('target-menu');
-const selectElement2 = document.getElementById('Model-type');
-const submitBtn = document.getElementById('submit-main');
-const messageDisplay = document.getElementById('PRT');
-
+const fileInput = document.getElementById('input-file');
+const selectElement1 = document.getElementById('variable');
+const selectElement2 = document.getElementById('dropdown_algo');
+const submitBtn = document.getElementById('submit-btn');
 
 
 
@@ -32,6 +38,10 @@ function handleFileSelection() {
         console.log('CSV file selected: ', file.name);
         isFormReady = true;
 
+        // then disable this input and call function abc
+        fileInput.disabled = true;
+        fetchcolumn(file);
+
         if(file.name.length > 15){
             document.getElementById('fileInput-label').innerText = file.name.slice(0, 11) + "...";
         }
@@ -44,6 +54,7 @@ function handleFileSelection() {
     }
 }
 
+
 fileInput.addEventListener('change', handleFileSelection);
 
 
@@ -55,7 +66,11 @@ submitBtn.addEventListener('click', function (event) {
         event.preventDefault();
     }
     else {
-        fetchMessage();
+        document.getElementById("spinner").style.display = "block";
+        document.getElementById("code-part").style.display = "none";
+        const file = fileInput.files[0];
+        const variable = document.getElementById("variable").value;
+        fetchMessage(file,variable);
     }
 });
 
@@ -74,6 +89,46 @@ selectElement2.addEventListener('change', function (event) {
     }
 });
 
-async function fetchMessage() {
-    messageDisplay.innerText = "Code generated for the dataset!!";
+async function fetchMessage(file, targetVariable) {
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append("target_variable", targetVariable);
+
+    const response = await fetch('/get_message', {
+        method: 'POST',              
+        body: formData                
+    });
+
+    const data = await response.json();
+    console.log(data.code_snippets[0].accuracy)
+
+    const img = document.createElement("img");
+    img.src = `data:image/png;base64,${data.heat}`;
+
+    document.getElementById('Heat_para').style.display="none";
+    document.getElementById('Heat_plot').appendChild(img);
+
+    document.getElementById('code-part').innerText = data.code_snippets[0].code;
+    document.getElementById("R2_para").style.display="none";
+
+    const R2_Img = document.createElement("img");
+    R2_Img.src = `data:image/png;base64,${data.code_snippets[0].score_plot}`;
+
+    document.getElementById('R2_plot').appendChild(R2_Img);
+
+    document.getElementById("spinner").style.display = "none";
+    document.getElementById("code-part").style.display = "block";
+    
+
+}
+
+async function Columns_set(data) {
+    for (let i = 0; i < data.length; i++) {
+        let option = document.createElement("option");
+        option.value = data[i];
+        option.text = data[i];
+        selectElement1.appendChild(option);
+        console.log(data[i]);
+    }
 }

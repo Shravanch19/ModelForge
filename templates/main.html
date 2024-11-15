@@ -4,60 +4,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/assets/style.css">
-    <title>ModelForge</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <title>Model Forge</title>
 </head>
 
 <body>
-    <div class="background">
-        <div class="sidenav">
-            <div class="logo">ModelForge</div>
+    <img class="one" src="/assets/bg_img.png" alt="png">
+    <img class="two" src="/assets/bg_img.png" alt="png">
+    <div class="background-effects"></div>
+    <header class="header">
+        <h2 class="logo">-: Model Forge :-</h2>
+    </header>
+
+    <main class="content">
+
+        <aside class="sidenav">
             <div class="inputs">
-                <div class="input-file">
-                    <input type="file" id="fileInput" class="file" aria-label="File Input" accept=".csv" />
-                    <label for="fileInput" class="custom-file-label" id="fileInput-label">Choose a file</label>
-                </div>
+                <label for="input-file" class="file-label" id="fileInput-label" >Drop CSV File</label>
+                <input type="file" id="input-file" accept=".csv" hidden>
 
-                <div class="input-description">
-                    <label for="Model-type">Model Type:</label>
-                    <div class="custom-select-container">
-                        <select name="Model-type" id="Model-type" aria-label="Select Model Type">
-                            <option value="" selected disabled>Select an option</option>
-                            <option value="regression">Regression</option>
-                            <option value="classification">Classification</option>
-                        </select>
-                        <span class="custom-arrow">&#x25BC;</span>
-                    </div>
-                </div>
+                <label for="dropdown_algo">Algorithm</label>
+                <select id="dropdown_algo">
+                    <option disabled selected>Select an Algo</option>
+                    <option>Linear Regression</option>
+                    <option>Classification</option>
+                </select>
 
-                <div class="target-feature">
-                    <label for="target-menu">Target Feature:</label>
-                    <div class="custom-select-container">
-                        <select name="target-menu" id="target-menu" aria-label="Select Target Feature">
-                            <option value="" selected disabled>Select an option</option>
-                            <option value="1">Age</option>
-                            <option value="2">Height</option>
-                        </select>
-                        <span class="custom-arrow">&#x25BC;</span>
-                    </div>
-                </div>
+                <label for="variable">Feature Selection</label>
+                <select id="variable">
+                    <option disabled selected>Select a variable</option>
+                </select>
 
-                <button type="submit" class="submit" id="submit-main">Submit</button>
-            </div>
-            <div class="footer">
-                Developer: Shravan & Jeevan
-            </div>
-        </div>
+                <label for="variable">Model Name</label>
+                <select id="variable" disabled>
+                    <option disabled selected>Select the model</option>
+                </select>
 
-        <div class="code">
-            <div class="top-clip">
-                <img src="/assets/AIs.gif" alt="AI illustration" />
+
+                <button class="submit-btn" id="submit-btn">Submit</button>
             </div>
-            <div class="content">
-                <p id="PRT">Upload a file to start generating your model</p>
+        </aside>
+
+        <section class="output">
+            <div class="codeblock">
+                <div class="spinner" id="spinner" style="display: none;"></div>
+                <pre><code id="code-part">
+Code will be generated here.....
+                </code></pre>
             </div>
-        </div>
-    </div>
+        </section>
+
+        <section class="plots ">
+            <div class="plot loading" id="Heat_plot">
+                <!-- <img src="Heat.png" alt="Heatmap"> -->
+                <p id="Heat_para">Plot will be generated after code generation</p>
+            </div>
+            <div class="plot loading" id="R2_plot">
+                <!-- <img src="R2.png" alt="Output Plot"> -->
+                <p id="R2_para">Plot will be generated after code generation</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>Developed By: Shravan & Jeevan</p>
+    </footer>
 
     <script src="/assets/script.js"></script>
 </body>
