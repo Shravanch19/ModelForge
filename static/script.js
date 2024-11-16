@@ -1,3 +1,4 @@
+let datas;
 async function fetchcolumn(file) {
     const formData = new FormData();
     formData.append('file', file);
@@ -70,6 +71,7 @@ submitBtn.addEventListener('click', function (event) {
         document.getElementById("code-part").style.display = "none";
         const file = fileInput.files[0];
         const variable = document.getElementById("variable").value;
+        submitBtn.disabled = true;
         fetchMessage(file,variable);
     }
 });
@@ -101,7 +103,7 @@ async function fetchMessage(file, targetVariable) {
     });
 
     const data = await response.json();
-    console.log(data.code_snippets[0].accuracy)
+    datas = data;
 
     const img = document.createElement("img");
     img.src = `data:image/png;base64,${data.heat}`;
@@ -119,8 +121,15 @@ async function fetchMessage(file, targetVariable) {
 
     document.getElementById("spinner").style.display = "none";
     document.getElementById("code-part").style.display = "block";
-    
 
+    Model_set = document.getElementById("model");
+    Model_set.disabled = false;
+    for (let i = 0; i < data.code_snippets.length; i++) {
+        let option = document.createElement("option");
+        option.value = data.code_snippets[i].model_name;
+        option.text = data.code_snippets[i].model_name + " (R2 Score: " + data.code_snippets[i].accuracy + "%)";
+        Model_set.appendChild(option);
+    }
 }
 
 async function Columns_set(data) {
@@ -132,3 +141,15 @@ async function Columns_set(data) {
         console.log(data[i]);
     }
 }
+
+document.getElementById("model").addEventListener("change", function () {
+    for (let i = 0; i < datas.code_snippets.length; i++) {
+        if (datas.code_snippets[i].model_name === this.value) {
+            document.getElementById("code-part").innerText = datas.code_snippets[i].code;
+            document.getElementById('R2_plot').removeChild(document.getElementById('R2_plot').lastElementChild);
+            const R2_Img = document.createElement("img");
+            R2_Img.src = `data:image/png;base64,${datas.code_snippets[i].score_plot}`;
+            document.getElementById('R2_plot').appendChild(R2_Img);
+        }
+    }
+})
