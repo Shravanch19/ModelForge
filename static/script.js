@@ -4,8 +4,8 @@ async function fetchcolumn(file) {
     formData.append('file', file);
 
     const response = await fetch('/get_columns', {
-        method: 'POST',              
-        body: formData                
+        method: 'POST',
+        body: formData
     });
     const data = await response.json();
     Columns_set(data.columns);
@@ -43,11 +43,11 @@ function handleFileSelection() {
         fileInput.disabled = true;
         fetchcolumn(file);
 
-        if(file.name.length > 15){
+        if (file.name.length > 15) {
             document.getElementById('fileInput-label').innerText = file.name.slice(0, 11) + "...";
         }
-        else{
-        document.getElementById('fileInput-label').innerText = file.name;
+        else {
+            document.getElementById('fileInput-label').innerText = file.name;
         }
 
     } else {
@@ -72,7 +72,7 @@ submitBtn.addEventListener('click', function (event) {
         const file = fileInput.files[0];
         const variable = document.getElementById("variable").value;
         submitBtn.disabled = true;
-        fetchMessage(file,variable);
+        fetchMessage(file, variable);
     }
 });
 
@@ -98,8 +98,8 @@ async function fetchMessage(file, targetVariable) {
     formData.append("target_variable", targetVariable);
 
     const response = await fetch('/get_message', {
-        method: 'POST',              
-        body: formData                
+        method: 'POST',
+        body: formData
     });
 
     const data = await response.json();
@@ -108,11 +108,11 @@ async function fetchMessage(file, targetVariable) {
     const img = document.createElement("img");
     img.src = `data:image/png;base64,${data.heat}`;
 
-    document.getElementById('Heat_para').style.display="none";
+    document.getElementById('Heat_para').style.display = "none";
     document.getElementById('Heat_plot').appendChild(img);
 
     document.getElementById('code-part').innerText = data.code_snippets[0].code;
-    document.getElementById("R2_para").style.display="none";
+    document.getElementById("R2_para").style.display = "none";
 
     const R2_Img = document.createElement("img");
     R2_Img.src = `data:image/png;base64,${data.code_snippets[0].score_plot}`;
@@ -121,6 +121,11 @@ async function fetchMessage(file, targetVariable) {
 
     document.getElementById("spinner").style.display = "none";
     document.getElementById("code-part").style.display = "block";
+
+    document.querySelectorAll('.plot').forEach(element => {
+        element.classList.remove('plot');
+        element.classList.add("Plot");
+    });
 
     Model_set = document.getElementById("model");
     Model_set.disabled = false;

@@ -154,3 +154,19 @@ def model_training_and_evaluation(x_train, y_train, x_test, y_test, code_snippet
     
     return model_infos
 
+# def Predict(file,target):
+#     data = pd.read_csv(file)
+#     code_snippets = []
+#     data = preprocessing(data, target, code_snippets)
+
+#     x_train, x_test, y_train, y_test = data_splitting_function(data, target, code_snippets)
+#     model = RandomForestRegressor()
+#     model.fit(x_train, y_train)
+#     y_pred = model.predict(x_test)
+#     accuracy = r2_score(y_test, y_pred)
+#     print(accuracy)
+#     user_input = (28,"Male","PhD","Director","10")
+#     pridected = model.predict(user_input)
+#     print(pridected)
+
+# Predict("Salary_Data.csv","Salary")
