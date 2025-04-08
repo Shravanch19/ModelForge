@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Model Forge - A tool for machine learning model generation">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Model Forge - ML Model Generator</title>
+</head>
+
+<body>
+    <div class="background-effects" aria-hidden="true"></div>
+    
+    <header class="header">
+        <nav class="main-nav">
+            <h1 class="logo">Model Forge</h1>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Documentation</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content">
+        <aside class="sidenav">
+            <form id="model-form" class="inputs" novalidate>
+                <div class="form-group">
+                    <label for="input-file" class="file-label" id="fileInput-label">
+                        <span class="file-icon">📁</span>
+                        <span class="file-text">Drop CSV File</span>
+                    </label>
+                    <input type="file" id="input-file" accept=".csv" hidden>
+                </div>
+
+                <div class="form-group">
+                    <label for="dropdown_algo">Algorithm</label>
+                    <select id="dropdown_algo" required>
+                        <option value="" disabled selected>Select an Algorithm</option>
+                        <option value="Regression">Regression</option>
+                        <option value="Classification">Classification</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="variable">Feature Selection</label>
+                    <select id="variable" required disabled>
+                        <option value="" disabled selected>Select a variable</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    <span class="btn-text">Generate Model</span>
+                    <span class="btn-icon">⚡</span>
+                </button>
+            </form>
+        </aside>
+
+        <section class="output" aria-live="polite">
+            <div class="codeblock">
+                <div class="spinner" id="spinner" role="status" aria-label="Loading" hidden>
+                    <div class="loading-bar">
+                        <div class="loading-progress"></div>
+                    </div>
+                    <span class="spinner-text">Generating code...</span>
+                </div>
+                <div class="model-selection" hidden>
+                    <div class="form-group">
+                        <label for="model">Select Model Type</label>
+                        <select id="model" required>
+                            <option value="" disabled selected>Choose a model</option>
+                        </select>
+                    </div>
+                </div>
+                <pre><code id="code-part" class="language-python">Code will be generated here.....</code></pre>
+            </div>
+        </section>
+
+        <section class="plots">
+            <div class="plot loading" id="model_plot">
+                <div class="plot-header">
+                    <h3>Model Performance Plot</h3>
+                    <div class="plot-actions">
+                        <button class="plot-download" aria-label="Download plot">📥</button>
+                        <button class="plot-refresh" aria-label="Refresh plot">🔄</button>
+                    </div>
+                </div>
+                <div class="plot-content">
+                    <p id="plot_para">Plot will be generated after code generation</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Developed By: Shravan</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/script.js"></script>
+</body>
+
+</html>
