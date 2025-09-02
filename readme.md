@@ -1,39 +1,27 @@
-# ModelForge
+# Model Forge
 
+Model Forge is a modern web-based tool for generating machine learning models from CSV data. It provides an intuitive interface for uploading datasets, selecting algorithms, and generating ready-to-use code and performance plots.
 
-## Getting Started
+## Features
 
-### Step 1: Clone this Repository
-To get a local copy of this repository, open your terminal and run the following command:
+- **CSV Upload**: Drag and drop your CSV file to get started.
+- **Algorithm Selection**: Choose between Regression and Classification tasks.
+- **Feature Selection**: Select the target variable for your model.
+- **Model Generation**: Automatically generates Python code for the best model based on your data and selected algorithm.
+- **Performance Visualization**: View model performance plots directly in the browser.
+- **Modern UI**: Responsive, glassmorphic design with smooth transitions and accessibility features.
 
-```bash
-git clone https://github.com/Shravanch19/ModelForge.git
-```
+## How It Works
 
-### Step 2: Create Virtual Enviroment
-To create, open your terminal and run the following command:
+1. **Upload CSV**: Click or drag your CSV file into the upload area.
+2. **Select Algorithm**: Choose Regression or Classification.
+3. **Select Target Variable**: Pick the column you want to predict.
+4. **Generate Model**: Click "Generate Model" to receive code and performance plots.
 
-```bash
-python -m venv venv
-```
-### Step 3: Activate The Enviroment
+## Developer
 
-```bash
-venv\Scripts\activate
-```
-### Step 4: Download required libraries
+Developed by Shravan
 
-```bash
-pip install -r requirements.txt
-```
-### Step 5: Run The Application
+---
 
-```bash
-flask --app app run
-```
-
-### Step 5: Stop the server
-
-```bash
-Ctrl + C
-```
+**Note:** This is a frontend-only project. Backend endpoints (`/generate`, `/retrieve_column_names`) must be implemented separately for full model generation functionality.
