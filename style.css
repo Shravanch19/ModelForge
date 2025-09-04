@@ -110,18 +110,26 @@ body {
     margin: 2rem auto;
     padding: 0 2rem;
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 350px 1fr; /* wider form for better usability */
     gap: 2rem;
+    align-items: start;
 }
+
 
 /* Sidebar Form */
 .sidenav {
     background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
     border-radius: 1rem;
-    padding: 1.5rem;
+    padding: 2rem;
     height: fit-content;
+    position: sticky;
+    top: 100px; /* stays visible when scrolling */
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .form-group {
@@ -129,10 +137,9 @@ body {
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-primary);
 }
 
 .file-label {
@@ -202,18 +209,23 @@ select:focus {
 /* Output Section */
 .output {
     background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
     border-radius: 1rem;
-    padding: 1.5rem;
+    padding: 2rem;
+    min-height: 500px; /* ensures it looks balanced */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: var(--shadow-sm);
 }
 
 .codeblock {
     position: relative;
     background: var(--surface-color);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    height: 400px;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    height: 500px; /* taller for better visibility */
     display: flex;
     flex-direction: column;
     border: 1px solid var(--primary-color);
@@ -255,52 +267,6 @@ select:focus {
 
 .codeblock pre::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-color);
-}
-
-/* Plots Section */
-.plots {
-    grid-column: 1 / -1;
-}
-
-.plot {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    transition: var(--transition);
-}
-
-.plot-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.plot-header h3 {
-    color: var(--text-primary);
-    font-size: 1.2rem;
-}
-
-.plot-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.plot-actions button {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    transition: var(--transition);
-}
-
-.plot-actions button:hover {
-    color: var(--text-primary);
-    background: var(--surface-color);
 }
 
 /* Loading Spinner */

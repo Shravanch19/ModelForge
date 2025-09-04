@@ -91,10 +91,6 @@ function resetModelSelect() {
     modelSelect.innerHTML = `<option disabled selected>Choose a model</option>`;
 }
 
-function enablePlots() {
-    document.querySelectorAll('.plot').forEach(plot => plot.classList.remove('loading'));
-}
-
 function generateAndDisplayCode() {
     codePart.textContent = modelSelect.value ? generateCode() : '';
 }
@@ -132,9 +128,6 @@ function updateModelOptions(models) {
         const selected = models.find(m => m.model_name === modelSelect.value);
         if (!selected) return;
         codePart.textContent = selected.code_snippets;
-        document.querySelector('.plot-content').innerHTML =
-            `<img src="data:image/png;base64,${selected.image}" alt="Model performance plot">`;
-        enablePlots();
     });
 }
 
