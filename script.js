@@ -19,8 +19,8 @@ fileInput.addEventListener('drop', e => {
     handleFile(e.dataTransfer.files[0]);
 });
 algorithmSelect.addEventListener('change', handleAlgorithmChange);
-variableSelect.addEventListener('change', () => resetModelSelect());
-modelSelect.addEventListener('change', () => generateAndDisplayCode());
+// variableSelect.addEventListener('change', () => resetModelSelect());
+// modelSelect.addEventListener('change', () => generateAndDisplayCode());
 form.addEventListener('submit', handleSubmit);
 
 // ===== File Handling =====
@@ -87,9 +87,9 @@ function resetSelects() {
     modelSelection.hidden = true;
 }
 
-function resetModelSelect() {
-    modelSelect.innerHTML = `<option disabled selected>Choose a model</option>`;
-}
+// function resetModelSelect() {
+//     modelSelect.innerHTML = `<option disabled selected>Choose a model</option>`;
+// }
 
 function generateAndDisplayCode() {
     codePart.textContent = modelSelect.value ? generateCode() : '';
@@ -113,22 +113,23 @@ async function simulateApiCall() {
 }
 
 function updateModelOptions(models) {
-    modelSelect.innerHTML = `<option disabled selected>Choose a model</option>`;
-    models.forEach(({ model_name, metric_value }) => {
-        const opt = document.createElement('option');
-        opt.value = model_name;
-        opt.textContent = `${model_name} (${metric_value.toFixed(2)})`;
-        modelSelect.appendChild(opt);
-    });
+    // modelSelect.innerHTML = `<option disabled selected>Choose a model</option>`;
+    // models.forEach(({ model_name, metric_value }) => {
+    //     const opt = document.createElement('option');
+    //     opt.value = model_name;
+    //     opt.textContent = `${model_name} (${metric_value.toFixed(2)})`;
+    //     modelSelect.appendChild(opt);
+    // });
 
-    modelSelection.hidden = false;
+    // modelSelection.hidden = false;
     spinner.style.display = 'none';
 
-    modelSelect.addEventListener('change', () => {
-        const selected = models.find(m => m.model_name === modelSelect.value);
-        if (!selected) return;
-        codePart.textContent = selected.code_snippets;
-    });
+    // modelSelect.addEventListener('change', () => {
+    //     const selected = models.find(m => m.model_name === modelSelect.value);
+    //     if (!selected) return;
+    //     codePart.textContent = selected.code_snippets;
+    // });
+    codePart.textContent = models.code_snippets;
 }
 
 async function retrieveColumnNames() {
@@ -143,7 +144,7 @@ async function retrieveColumnNames() {
         variableSelect.innerHTML = `<option disabled selected>Select a variable</option>`;
         column_names.forEach(col => {
             const opt = document.createElement('option');
-            opt.value = col.replace(/\s+/g, '_');
+            opt.value = col;
             opt.textContent = col;
             variableSelect.appendChild(opt);
         });

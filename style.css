@@ -213,7 +213,7 @@ select:focus {
     border: 1px solid var(--glass-border);
     border-radius: 1rem;
     padding: 2rem;
-    min-height: 500px; /* ensures it looks balanced */
+    min-height: 450px; /* ensures it looks balanced */
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -225,7 +225,7 @@ select:focus {
     background: var(--surface-color);
     border-radius: 0.75rem;
     padding: 1.5rem;
-    height: 500px; /* taller for better visibility */
+    height: 400px; /* taller for better visibility */
     display: flex;
     flex-direction: column;
     border: 1px solid var(--primary-color);
@@ -240,6 +240,7 @@ select:focus {
     overflow-y: auto;
     padding-right: 1rem;
     text-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+    max-width: 450px;
 }
 
 .codeblock pre code {
